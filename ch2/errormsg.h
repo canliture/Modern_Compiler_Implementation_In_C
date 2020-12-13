@@ -1,0 +1,16 @@
+#ifndef __INCLUDE__ERRORMSG_H
+#define __INCLUDE__ERRORMSG_H
+
+#include "util.h"
+
+extern bool EM_anyErrors;
+
+void EM_newline(void);
+
+extern int EM_tokPos;
+
+void EM_error(int, string,...);
+void EM_impossible(string,...);
+void EM_reset(string filename);
+
+#endif
