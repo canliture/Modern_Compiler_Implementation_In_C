@@ -13,3 +13,4 @@ _deps
 */.idea
 */CMakeLists.txt
 */cmake*
+*.rar
