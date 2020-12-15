@@ -1,12 +1,19 @@
 #ifndef __INCLUDE__TOKENS_H
 #define __INCLUDE__TOKENS_H
 
+#include <string.h>
+#include "util.h"
+
 typedef union  {
 	int pos;
 	int ival;
 	string sval;
 	} YYSTYPE;
 extern YYSTYPE yylval;
+
+void initStr();
+void append(char);
+string clear();
 
 # define ID 257
 # define STRING 258
