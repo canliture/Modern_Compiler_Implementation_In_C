@@ -28,7 +28,16 @@ void yyerror(char *s)
   AND OR ASSIGN
   ARRAY IF THEN ELSE WHILE FOR TO DO LET IN END OF 
   BREAK NIL
-  FUNCTION VAR TYPE 
+  FUNCTION VAR TYPE
+  UMINUS
+
+%nonassoc ASSIGN
+%left OR
+%left AND
+%nonassoc EQ NEQ GT LT GE LE
+%left PLUS MINUS
+%left TIMES DIVIDE
+%left UMINUS
 
 %start program
 
@@ -39,7 +48,89 @@ void yyerror(char *s)
  *  to replace the two dummy productions below with an actual grammar. 
  */
 
-program:	exp
+program: exp;
 
-exp:   ID
+decls:  decl
+      | decls decl
+      |
+      ;
 
+decl:  tydecl
+     | vardecl
+     | fundecl
+     ;
+
+tydecl: TYPE ID EQ ty
+        ;
+
+ty:  ID
+   | LBRACE tyfields RBRACE
+   | ARRAY OF ID
+   ;
+
+tyfields:  ID COLON ID
+         | tyfields COMMA ID COLON ID
+         |
+         ;
+
+vardecl:  VAR ID ASSIGN exp
+        | VAR ID COLON ID ASSIGN exp
+        ;
+
+fundecl:  FUNCTION ID LPAREN tyfields RPAREN EQ exp
+        | FUNCTION ID LPAREN tyfields RPAREN COLON ID EQ exp
+        ;
+
+lvalue:  ID
+       | lvalue DOT ID
+       | ID LBRACK exp RBRACK
+       | lvalue LBRACK exp RBRACK
+       ;
+
+exp:  lvalue
+    | NIL
+    | LPAREN exp SEMICOLON expseq RPAREN
+    | LPAREN RPAREN
+    | INT
+    | STRING
+    | MINUS exp            %prec UMINUS
+    | ID LPAREN RPAREN
+    | ID LPAREN exp expseq1 RPAREN
+    | exp PLUS exp
+    | exp MINUS exp
+    | exp TIMES exp
+    | exp DIVIDE exp
+    | exp EQ exp
+    | exp NEQ exp
+    | exp GT exp
+    | exp LT exp
+    | exp GE exp
+    | exp LE exp
+    | exp AND exp
+    | exp OR exp
+    | ID LBRACE ID EQ exp expseq2 RBRACE
+    | ID LBRACE RBRACE
+    | ID LBRACK exp RBRACK OF exp
+    | lvalue ASSIGN exp
+    | IF exp THEN exp ELSE exp
+    | IF exp THEN exp
+    | WHILE exp DO exp
+    | FOR ID ASSIGN exp TO exp DO exp
+    | BREAK
+    | LET decls IN expseq END
+    | LET decls IN         END
+    | LPAREN exp RPAREN
+    ;
+
+expseq:  exp
+       | expseq SEMICOLON exp
+       ;
+
+expseq1:  COMMA exp expseq1
+        |
+        ;
+
+expseq2:  COMMA ID EQ exp
+        | expseq2 COMMA ID EQ exp
+        |
+        ;
