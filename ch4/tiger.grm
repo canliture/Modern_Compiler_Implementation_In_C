@@ -40,6 +40,14 @@ void yyerror(char *s)
 %type <exp> exp program
 /* et cetera */
 
+%nonassoc ASSIGN
+%left OR
+%left AND
+%nonassoc EQ NEQ GT LT GE LE
+%left PLUS MINUS
+%left TIMES DIVIDE
+%left UMINUS
+
 %start program
 
 %%
