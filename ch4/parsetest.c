@@ -4,7 +4,8 @@
 
 int main(int argc, char **argv) {
     if (argc!=2) {fprintf(stderr,"usage: a.out filename\n"); exit(1);}
-    if (parse(argv[1])) {
+    A_exp exp = parse(argv[1]);
+    if (exp) {
         fprintf(stderr, "Parsing successful!\n");
     } else {
         fprintf(stderr,"Parsing failed\n");
