@@ -1,5 +1,5 @@
-a.out: parsetest.o y.tab.o lex.yy.o errormsg.o util.o absyn.o symbol.o table.o parse.o
-	cc -g parsetest.o y.tab.o lex.yy.o errormsg.o util.o absyn.o symbol.o table.o parse.o
+a.out: parsetest.o y.tab.o lex.yy.o errormsg.o util.o absyn.o symbol.o table.o parse.o prabsyn.o
+	cc -g parsetest.o y.tab.o lex.yy.o errormsg.o util.o absyn.o symbol.o table.o parse.o prabsyn.o
 
 parsetest.o: parsetest.c errormsg.h util.h
 	cc -g -c parsetest.c
@@ -37,5 +37,8 @@ table.o: table.c table.h
 parse.o: parse.c parse.h
 	cc -g -c parse.c
 
+prabsyn.o: prabsyn.c prabsyn.h
+	cc -g -c prabsyn.c
+
 clean: 
-	rm -f a.out util.o parsetest.o lex.yy.c lex.yy.o errormsg.o y.tab.c y.tab.h y.tab.o y.output absyn.o parse.o symbol.o table.o
+	rm -f a.out util.o parsetest.o lex.yy.c lex.yy.o errormsg.o y.tab.c y.tab.h y.tab.o y.output absyn.o parse.o symbol.o table.o prabsyn.o
